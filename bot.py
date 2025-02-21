@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from profile import router as profile_router
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
+from features import profile
 
 # Load environment variables (Bot Token)
 load_dotenv()
@@ -66,6 +67,8 @@ async def help_command(message: Message):
                 "/start - Start the bot\n" \
                 "/help - Show available commands\n"
     await message.answer(help_text)
+
+dp.include_router(profile.router)
 
 # Error handling
 async def main():
