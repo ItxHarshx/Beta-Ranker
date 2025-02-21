@@ -21,12 +21,12 @@ async def profile_handler(message: types.Message):
     if not user_data:
         await message.reply("Error fetching profile data. Try again later.")
         return
-        
-    gold_coins = f"{gold_coins:,}"
 
     # Extract user stats
     health, gold_coins, exp, level, essence = user_data
 
+    gold_coins = f"{gold_coins:,}"
+    
     profile_text = (
         f"👤 {first_name}'s Profile\n\n"
         f"💰 Gold Coins: {gold_coins}\n"
