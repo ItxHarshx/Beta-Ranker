@@ -1,7 +1,7 @@
 import asyncpg
 from aiogram import Router, types
 from aiogram.filters import Command
-from leveling import exp_required
+from features.leveling import exp_required
 from database import get_user_data, create_user_if_not_exists  # Make sure these functions exist
 
 router = Router()
