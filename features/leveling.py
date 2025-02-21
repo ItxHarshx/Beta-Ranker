@@ -8,7 +8,7 @@ router = Router()
 
 # Leveling Configuration
 EXP_PER_MESSAGE = 2
-SPAM_LIMIT_SECONDS = 1  # Prevents spam (2 messages per second)
+SPAM_LIMIT_SECONDS = 0.5  # Prevents spam (2 messages per second)
 
 GROUP_ID = -1002361603406
 
