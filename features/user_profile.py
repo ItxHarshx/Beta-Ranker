@@ -27,9 +27,9 @@ async def profile_handler(message: types.Message):
     
     profile_text = (
         f"👤 {first_name}'s Profile\n\n"
-        f"💰 Gold Coins: {format(gold_coins, ',')}\n"
+        f"💰 Gold Coins: `{gold_coins:,}`\n"
         f"📈 Level: {level}\n"
-        f"✨ EXP: {exp}/{get_exp_required}\n"
+        f"✨ EXP: `{exp}/{get_exp_required}`\n"
         f"❤️ Health: {health}\n"
         f"🔮 Essence: {essence}"
     )
