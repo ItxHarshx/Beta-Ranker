@@ -6,7 +6,6 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
-from aiogram.utils.markdown import quote_html
 
 # Load environment variables (Bot Token)
 load_dotenv()
