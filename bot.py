@@ -7,7 +7,7 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
-from features import user_profile, leveling
+from features import user_profile, leveling, checkin
 from features.user_profile import router as profile_router
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
@@ -66,6 +66,7 @@ async def help_command(message: Message):
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
+dp.include_router(checkin.router)
 
 # Error handling
 async def main():
