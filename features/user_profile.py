@@ -1,35 +1,33 @@
-from aiogram import types, Router
-import psycopg2
+import asyncpg
+from aiogram import Router, types
 from aiogram.filters import Command
+from database import get_user_data, create_user_if_not_exists  # Make sure these functions exist
 
-# Create a Router for the profile module
 router = Router()
-
-# Database Connection (Import your DB connection here)
-from database import conn
-
-cursor = conn.cursor()
 
 @router.message(Command("profile"))
 async def profile_handler(message: types.Message):
     user_id = message.from_user.id
+    first_name = message.from_user.first_name
 
-    cursor.execute("SELECT first_name, health, gold_coins, exp, level, essence FROM users WHERE user_id = %s", (user_id,))
-    user = cursor.fetchone()
+    # Ensure the user exists in the database
+    await create_user_if_not_exists(user_id)
 
-    if user:
-        first_name, health, gold, exp, level, essence = user
-    else:
-        # Insert new user if not found
-        first_name = message.from_user.first_name
-        cursor.execute("INSERT INTO users (user_id, first_name) VALUES (%s, %s)", (user_id, first_name))
-        conn.commit()
-        health, gold, exp, level, essence = 100, 0, 0, 1, 0
+    # Fetch user data
+    user_data = await get_user_data(user_id)
+
+    # Check if data is retrieved correctly
+    if not user_data:
+        await message.reply("Error fetching profile data. Try again later.")
+        return
+
+    # Extract user stats
+    health, gold_coins, exp, level, essence = user_data
 
     profile_text = (
-        f"👤 <b>{first_name}'s Profile</b>\n\n"
+        f"👤 {first_name}'s Profile\n\n"
         f"❤️ Health: {health}\n"
-        f"💰 Gold Coins: {gold}\n"
+        f"💰 Gold Coins: {gold_coins}\n"
         f"⚡ EXP: {exp}\n"
         f"📈 Level: {level}\n"
         f"🔮 Essence: {essence}"
