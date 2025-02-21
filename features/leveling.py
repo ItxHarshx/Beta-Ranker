@@ -26,7 +26,7 @@ def get_exp_required(level):
 
 # Function to get user data from `users` table
 async def get_user_data(user_id):
-    db = await get_db()
+    db = await connect_db()
     user = await db.fetchrow("SELECT exp, level, coins, last_message_time FROM users WHERE user_id = $1", user_id)
     await db.close()
     
@@ -36,7 +36,7 @@ async def get_user_data(user_id):
 
 # Function to update EXP and handle leveling
 async def update_user_exp(user_id, message: types.Message):
-    db = await get_db()
+    db = await connect_db()
     user = await get_user_data(user_id)
     
     # Spam Prevention
