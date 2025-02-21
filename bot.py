@@ -15,7 +15,7 @@ load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 
 # Initialize bot and dispatcher
-bot = Bot(token="YOUR_BOT_TOKEN", default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token="BOT_TOKEN", default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
 # Start command
