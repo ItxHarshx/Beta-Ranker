@@ -27,11 +27,11 @@ def get_exp_required(level):
 # Function to get user data from `users` table
 async def get_user_data(user_id):
     db = await connect_db()
-    user = await db.fetchrow("SELECT exp, level, coins, last_message_time FROM users WHERE user_id = $1", user_id)
+    user = await db.fetchrow("SELECT exp, level, gold_coins, last_message_time FROM users WHERE user_id = $1", user_id)
     await db.close()
     
     if not user:
-        return {"exp": 0, "level": 1, "coins": 0, "last_message_time": None}
+        return {"exp": 0, "level": 1, "gold_coins": 0, "last_message_time": None}
     return dict(user)
 
 # Function to update EXP and handle leveling
@@ -55,11 +55,11 @@ async def update_user_exp(user_id, message: types.Message):
         new_level = user["level"] + 1
         new_exp -= exp_required  # Carry over extra EXP
         coin_reward = random.randint(60, 120)
-        new_coins = user["coins"] + coin_reward
+        new_coins = user["gold_coins"] + coin_reward
 
         # Update user data in `users` table
         await db.execute(
-            "UPDATE users SET exp = $1, level = $2, coins = $3, last_message_time = $4 WHERE user_id = $5",
+            "UPDATE users SET exp = $1, level = $2, gold_coins = $3, last_message_time = $4 WHERE user_id = $5",
             new_exp, new_level, new_coins, now, user_id
         )
 
