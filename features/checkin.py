@@ -5,7 +5,7 @@ from database import get_last_checkin, update_checkin
 
 router = Router()
 
-@router.message(Command("daily"))
+@router.message(Command("checkin"))
 async def daily_checkin(message: types.Message):
     user_id = message.from_user.id
     first_name = message.from_user.first_name
