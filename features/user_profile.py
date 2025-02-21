@@ -10,7 +10,8 @@ from database import conn
 
 cursor = conn.cursor()
 
-@router.message(commands=["profile"])
+@router.message(Command("profile"))
+async def profile_handler(message: Message):
 async def profile_handler(message: types.Message):
     user_id = message.from_user.id
 
