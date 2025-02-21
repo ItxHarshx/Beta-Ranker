@@ -1,1 +1,1 @@
-from . import user_profile, leveling
+from . import user_profile, leveling, checkin
