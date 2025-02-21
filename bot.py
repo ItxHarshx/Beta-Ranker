@@ -7,6 +7,7 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
+from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
 
 # Load environment variables (Bot Token)
