@@ -8,8 +8,9 @@ async def connect_db():
 async def create_user_if_not_exists(user_id):
     conn = await connect_db()
     await conn.execute(
-        """INSERT INTO users (user_id, health, gold_coins, exp, level, essence)
-           VALUES ($1, 100, 0, 0, 1, 0) ON CONFLICT (user_id) DO NOTHING""",
+        """INSERT INTO users (user_id, health, gold_coins, exp, level, essence, last_message_time)
+           VALUES ($1, 100, 0, 0, 1, 0, NOW()) 
+           ON CONFLICT (user_id) DO NOTHING""",
         user_id
     )
     await conn.close()
