@@ -7,10 +7,10 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
+from features import user_profile
 from user_profile import router as profile_router
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
-from features import profile
 
 # Load environment variables (Bot Token)
 load_dotenv()
