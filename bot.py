@@ -19,11 +19,10 @@ dp = Dispatcher()
 IMAGE_FILE_ID = "https://ibb.co/99h957S4"
 KAISEN_GROUP_LINK = "https://t.me/KaisenWorld"
 
-user_id = message.from_user.id
-first_name = message.from_user.first_name
-
 @dp.message(Command("start"))
 async def start_command(message: Message):
+    user_id = message.from_user.id
+    first_name = message.from_user.first_name
     user_link = f'<a href="tg://user?id={user_id}">{first_name}</a>'
 
     # Create an inline button linking to Kaisen World
