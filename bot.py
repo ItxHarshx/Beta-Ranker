@@ -64,7 +64,7 @@ async def help_command(message: Message):
                 "/help - Show available commands\n"
     await message.answer(help_text)
 
-dp.include_router(profile.router)
+dp.include_router(user_profile.router)
 
 # Error handling
 async def main():
