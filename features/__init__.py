@@ -1,1 +1,1 @@
-from . import profile
+from . import user_profile
