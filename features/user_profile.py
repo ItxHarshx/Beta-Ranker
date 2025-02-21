@@ -40,7 +40,7 @@ async def profile_handler(message: types.Message):
         f"📈 Level: {level}\n"
         f"✨ EXP: {exp}/{required_exp}\n"  # ✅ Shows current/required EXP correctly
         f"❤️ Health: {health}\n"
-        f"🔮 Essence: {essence}"\n\n
+        f"🔮 Essence: {essence}\n\n"
         f"📅 Last Check-in: `{last_checkin_text}`"
     )
 
