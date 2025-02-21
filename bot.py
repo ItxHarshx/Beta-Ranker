@@ -66,7 +66,7 @@ async def help_command(message: Message):
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
-dp.include_router(daily.router)
+dp.include_router(checkin.router)
 
 # Error handling
 async def main():
