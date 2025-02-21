@@ -23,7 +23,7 @@ async def start_handler(message: types.Message):
     username = message.from_user.username or first_name
 
     # Create a user link using Telegram user ID
-    user_link = f'<a href="tg://user?id={user_id}">{quote_html(first_name)}</a>'
+    user_link = f'<a href="tg://user?id={user_id}">{first_name}</a>'
 
     # Inline button linking to KaisenWorld group
     chat_group_url = "https://t.me/KaisenWorld"
