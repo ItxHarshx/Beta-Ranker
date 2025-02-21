@@ -24,12 +24,10 @@ async def profile_handler(message: types.Message):
 
     # Extract user stats
     health, gold_coins, exp, level, essence = user_data
-
-    gold_coins = f"{gold_coins:,}"
     
     profile_text = (
         f"👤 {first_name}'s Profile\n\n"
-        f"💰 Gold Coins: {gold_coins}\n"
+        f"💰 Gold Coins: {format(gold_coins, ',')}\n"
         f"📈 Level: {level}\n"
         f"✨ EXP: {exp}/{get_exp_required}\n"
         f"❤️ Health: {health}\n"
