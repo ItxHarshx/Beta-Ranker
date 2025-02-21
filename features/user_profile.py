@@ -1,6 +1,7 @@
 import asyncpg
 from aiogram import Router, types
 from aiogram.filters import Command
+from leveling import exp_required
 from database import get_user_data, create_user_if_not_exists  # Make sure these functions exist
 
 router = Router()
@@ -28,7 +29,7 @@ async def profile_handler(message: types.Message):
         f"👤 {first_name}'s Profile\n\n"
         f"💰 Gold Coins: {gold_coins:,}\n"
         f"📈 Level: {level}\n"
-        f"⚡ EXP: {exp}\n"
+        f"✨ EXP: {exp}/{exp_required}\n"
         f"❤️ Health: {health}\n"
         f"🔮 Essence: {essence}"
     )
