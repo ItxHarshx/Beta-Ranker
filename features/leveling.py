@@ -2,7 +2,7 @@ import random
 import asyncpg
 from aiogram import Router, types
 from datetime import datetime, timedelta
-from database import get_db  # Import the existing DB connection function
+from database import connect_db  # Import the existing DB connection function
 
 router = Router()
 
