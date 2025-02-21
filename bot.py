@@ -6,6 +6,7 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
+from aiogram.utils.markdown import quote_html
 
 # Load environment variables (Bot Token)
 load_dotenv()
@@ -16,31 +17,37 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 # Start command
-IMAGE_FILE_ID = "https://ibb.co/99h957S4"
-KAISEN_GROUP_LINK = "https://t.me/KaisenWorld"
-
 @dp.message(Command("start"))
-async def start_command(message: Message):
+async def start_handler(message: types.Message):
     user_id = message.from_user.id
-    first_name = message.from_user.first_name
-    user_link = f'<a href="tg://user?id={user_id}">{first_name}</a>'
+    first_name = message.from_user.first_name or "User"  # Fallback if no name
+    username = message.from_user.username or first_name
 
-    # Create an inline button linking to Kaisen World
+    # Create a user link using Telegram user ID
+    user_link = f'<a href="tg://user?id={user_id}">{quote_html(first_name)}</a>'
+
+    # Inline button linking to KaisenWorld group
+    chat_group_url = "https://t.me/KaisenWorld"
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Join Chat Group", url=KAISEN_GROUP_LINK)]
+            [InlineKeyboardButton(text="Join Chat Group", url=chat_group_url)]
         ]
     )
+
+    # Welcome message with user link and bold formatting
+    caption = (
+        f"Hey {user_link}, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
+        f"<b>📜 ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴛᴏᴋᴇɴs?</b>\n"
+        f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴋᴀɪᴢᴇɴ ᴛᴏᴋᴇɴs.\n\n"
+        f"𝖦𝖾𝗍 𝗌𝗍𝖺𝗋𝗍𝖾𝖽 𝗇𝗈𝗐! 𝗍𝗒𝗉𝖾 /help 𝖿𝗈𝗋 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝗌.\n\n"
+    )
+
+    # Send photo with caption and button
     await message.answer_photo(
-        IMAGE_FILE_ID, 
-        caption=(
-                f"Hey **{user_link}**, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖯𝗒𝗑𝗇 𝖡𝗈𝗍 ! 🎉\n\n"
-                f"<b>📜 ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴛᴏᴋᴇɴs ?</b>\n"
-                f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴋᴀɪᴢᴇɴ ᴛᴏᴋᴇɴs.\n\n"
-                f"𝖦𝖾𝗍 𝗌𝗍𝖺𝗋𝗍𝖾𝖽 𝗇𝗈𝗐 ! 𝗍𝗒𝗉𝖾 /help 𝖿𝗈𝗋 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝗌.\n\n"
-            ),
-          reply_markup=keyboard,  # Attach the keyboard to the message
-        )
+        photo="https://imgur.com/a/hJU9sB4",
+        caption=caption,
+        reply_markup=keyboard
+    )
 
     
 # Help command
