@@ -24,7 +24,7 @@ async def start_command(message: Message):
     # Create an inline button linking to Kaisen World
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Join Chat Group, url=KAISEN_GROUP_LINK)]
+            [InlineKeyboardButton(text="Join Chat Group", url=KAISEN_GROUP_LINK)]
         ]
     )
     await message.answer_photo(
