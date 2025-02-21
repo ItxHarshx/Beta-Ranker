@@ -18,6 +18,7 @@ dp = Dispatcher()
 # Start command
 IMAGE_FILE_ID = "https://ibb.co/99h957S4"
 KAISEN_GROUP_LINK = "https://t.me/KaisenWorld"
+name = message.from_user.first_name
 
 @dp.message(Command("start"))
 async def start_command(message: Message):
@@ -29,9 +30,9 @@ async def start_command(message: Message):
     )
     await message.answer_photo(
         IMAGE_FILE_ID, 
-        caption="Hey User, Welcome to Kaisen Ranking Bot ! 🎉\n\n📜 **ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴇssᴇɴᴄᴇ ?**\n- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴇssᴇɴᴄᴇ.\n\nGet started now ! type /help for more commands.",
-        reply_markup=keyboard  # Add the button below the image
-    )
+        caption="Hey **{name}**, Welcome to Kaisen Ranking Bot ! 🎉\n\n📜 **ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴇssᴇɴᴄᴇ ?**\n- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴇssᴇɴᴄᴇ.\n\nGet started now ! type /help for more commands.",
+        reply_markup=keyboard, parse_mode="Markdown") # Add the button below the image
+
     
 # Help command
 @dp.message(Command("help"))
