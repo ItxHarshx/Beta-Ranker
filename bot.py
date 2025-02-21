@@ -18,10 +18,10 @@ dp = Dispatcher()
 # Start command
 IMAGE_FILE_ID = "https://ibb.co/99h957S4"
 KAISEN_GROUP_LINK = "https://t.me/KaisenWorld"
-name = message.from_user.first_name
 
 @dp.message(Command("start"))
 async def start_command(message: Message):
+    name = message.from_user.first_name
     # Create an inline button linking to Kaisen World
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
