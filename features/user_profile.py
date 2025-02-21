@@ -1,4 +1,4 @@
-import asyncpg
+import asyncpg2
 from aiogram import Router, types
 from aiogram.filters import Command
 from database import get_user_data, create_user_if_not_exists  # Make sure these functions exist
