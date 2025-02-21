@@ -7,7 +7,7 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
-from profile import router as profile_router
+from user_profile import router as profile_router
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
 from features import profile
@@ -15,9 +15,6 @@ from features import profile
 # Load environment variables (Bot Token)
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
-
-# Register profile command router
-dp.include_router(profile_router)
 
 # Initialize bot and dispatcher
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
