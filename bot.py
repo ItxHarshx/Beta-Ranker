@@ -19,9 +19,13 @@ dp = Dispatcher()
 IMAGE_FILE_ID = "https://ibb.co/99h957S4"
 KAISEN_GROUP_LINK = "https://t.me/KaisenWorld"
 
+user_id = message.from_user.id
+first_name = message.from_user.first_name
+
 @dp.message(Command("start"))
 async def start_command(message: Message):
-    name = message.from_user.first_name
+    user_link = f'<a href="tg://user?id={user_id}">{first_name}</a>'
+
     # Create an inline button linking to Kaisen World
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
@@ -30,8 +34,14 @@ async def start_command(message: Message):
     )
     await message.answer_photo(
         IMAGE_FILE_ID, 
-        caption="Hey **{name}**, Welcome to Kaisen Ranking Bot ! 🎉\n\n📜 **ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴇssᴇɴᴄᴇ ?**\n- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴇssᴇɴᴄᴇ.\n\nGet started now ! type /help for more commands.",
-        reply_markup=keyboard, parse_mode="Markdown") # Add the button below the image
+        caption=(
+                f"Hey **{user_link}**, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖯𝗒𝗑𝗇 𝖡𝗈𝗍 ! 🎉\n\n"
+                f"<b>📜 ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴛᴏᴋᴇɴs ?</b>\n"
+                f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴋᴀɪᴢᴇɴ ᴛᴏᴋᴇɴs.\n\n"
+                f"𝖦𝖾𝗍 𝗌𝗍𝖺𝗋𝗍𝖾𝖽 𝗇𝗈𝗐 ! 𝗍𝗒𝗉𝖾 /help 𝖿𝗈𝗋 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝗌.\n\n"
+            ),
+          reply_markup=keyboard,  # Attach the keyboard to the message
+        )
 
     
 # Help command
