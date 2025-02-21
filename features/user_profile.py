@@ -1,8 +1,8 @@
 import asyncpg
 from aiogram import Router, types
 from aiogram.filters import Command
-from features.leveling import get_exp_required
-from database import get_user_data, create_user_if_not_exists  # Make sure these functions exist
+from features.leveling import get_exp_required  # Function to get required EXP
+from database import get_user_data, create_user_if_not_exists  # DB functions
 
 router = Router()
 
@@ -24,14 +24,18 @@ async def profile_handler(message: types.Message):
 
     # Extract user stats
     health, gold_coins, exp, level, essence = user_data
-    
+
+    # Get required EXP for next level
+    required_exp = get_exp_required(level)
+
+    # Format profile text
     profile_text = (
         f"👤 {first_name}'s Profile\n\n"
-        f"💰 Gold Coins: `{gold_coins:,}`\n"
+        f"💰 Gold Coins: {gold_coins:,}\n"  # ✅ Adds commas to gold coins
         f"📈 Level: {level}\n"
-        f"✨ EXP: `{exp}/{get_exp_required}`\n"
+        f"✨ EXP: {exp}/{required_exp}\n"  # ✅ Shows current/required EXP correctly
         f"❤️ Health: {health}\n"
         f"🔮 Essence: {essence}"
     )
 
-    await message.reply(profile_text)
+    await message.reply(profile_text, parse_mode="HTML")  # ✅ Use HTML mode to prevent errors
