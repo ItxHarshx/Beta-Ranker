@@ -1,5 +1,6 @@
 from aiogram import types, Router
 import psycopg2
+from aiogram.filters import Command
 
 # Create a Router for the profile module
 router = Router()
