@@ -79,8 +79,8 @@ async def daily_checkin(message: types.Message):
 
     if last_checkin:
     # Ensure last_checkin is timezone-aware (convert if necessary)
-    if last_checkin.tzinfo is None:
-        last_checkin = last_checkin.replace(tzinfo=timezone.utc)
+        if last_checkin.tzinfo is None:
+            last_checkin = last_checkin.replace(tzinfo=timezone.utc)
 
     # Calculate next check-in time
     next_checkin_time = last_checkin + timedelta(hours=24)
