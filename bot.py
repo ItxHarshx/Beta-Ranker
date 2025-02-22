@@ -10,7 +10,7 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 from features import user_profile, leveling
 from features.user_profile import router as profile_router
-from database import get_last_checkin, update_checkin, create_user_if_not_exists
+from database import get_last_checkin, update_checkin, get_user_data, create_user_if_not_exists
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties 
 
