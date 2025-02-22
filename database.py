@@ -22,3 +22,10 @@ async def get_user_data(user_id):
     user = await conn.fetchrow("SELECT health, gold_coins, exp, level, essence FROM users WHERE user_id = $1", user_id)
     await conn.close()
     return user  # Returns None if user not found
+
+# Fetch last check-in time
+async def get_last_checkin(user_id):
+    conn = await connect_db()
+    last_checkin = await conn.fetchval("SELECT last_checkin FROM users WHERE user_id = $1", user_id)
+    await conn.close()
+    return last_checkin
