@@ -13,6 +13,7 @@ from features.user_profile import router as profile_router
 from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
+import balance
 
 # Load environment variables (Bot Token)
 load_dotenv()
@@ -68,7 +69,6 @@ async def help_command(message: Message):
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
-dp.include_router(balance.router)
 
 @dp.message(Command("daily"))
 async def daily_checkin(message: types.Message):
