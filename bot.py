@@ -27,48 +27,34 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def start_handler(message: types.Message):
     user_id = message.from_user.id
-    first_name = message.from_user.first_name or "User"  
+    first_name = message.from_user.first_name or "User"
 
     # Escape special characters to avoid issues
     safe_first_name = html.escape(first_name)
 
-    # Correct user mention format
-    user_link = f'<a href="tg://user?id={user_id}">{safe_first_name}</a>'
+    # Ensure the user exists in the database
+    await create_user_if_not_exists(user_id)  # ✅ Only passing user_id
 
-    # Inline button linking to KaisenWorld group
-    chat_group_url = "https://t.me/KaisenWorld"
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="Join Chat Group", url=chat_group_url)]
-        ]
-    )
-
-    # ✅ Ensure the user exists in the database before fetching data
-    await create_user_if_not_exists(user_id, safe_first_name)
-
-    # ✅ Now fetch user stats
+    # Fetch user stats
     user_data = await get_user_data(user_id)
 
     if not user_data:
         await message.reply("Error fetching your data. Try again later.")
         return
 
-    # ✅ Unpack user stats correctly
     health, gold_coins, exp, level, essence = user_data  
 
-    # Welcome message
     caption = (
-        f"Hey {user_link}, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
+        f"Hey <a href='tg://user?id={user_id}'>{safe_first_name}</a>, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
         f"<b>📜 ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴄᴏɪɴs?</b>\n"
-        f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴄᴏɪɴs.\n\n<b>➻ ʏᴏᴜʀ sᴛᴀᴛs:</b>\n- ʟᴇᴠᴇʟ: {level}\n- ᴄᴏɪɴs: {gold_coins:,}\n- ᴇssᴇɴᴄᴇ: {essence}\n\n"
+        f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴄᴏɪɴs.\n\n"
+        f"<b>➻ ʏᴏᴜʀ sᴛᴀᴛs:</b>\n- ʟᴇᴠᴇʟ: {level}\n- ᴄᴏɪɴs: {gold_coins:,}\n- ᴇssᴇɴᴄᴇ: {essence}\n\n"
         f"𝖦𝖾𝗍 𝗌𝗍𝖺𝗋𝗍𝖾𝖽 𝗇𝗈𝗐! 𝗍𝗒𝗉𝖾 /help 𝖿𝗈𝗋 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝗌."
     )
 
-    # Send photo with caption and button
     await message.answer_photo(
         photo="https://ibb.co/YFVsLtWN",
         caption=caption,
-        reply_markup=keyboard,
         parse_mode="HTML"
     )
 
