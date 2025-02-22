@@ -189,7 +189,22 @@ async def switch_leaderboard(callback: CallbackQuery):
     category = callback.data.split("_")[1]  # Extracts the chosen category
     await send_leaderboard(callback.message, category=category, edit=True)
     await callback.answer()  # Acknowledge the button click
-    
+
+@dp.message(Command("dev"))
+async def dev_command(message: Message):
+    dev_text = (
+        " *📜 Bᴏᴛ Dᴇᴠ. Lᴏɢs:*\n\n"
+        f"➻ *Bot Name:*   Bot\n"
+        f"➻ *Version:* 0.1\n"
+        f"➻ *Developer: [Harsh](tg://user?id=6329058409)\n\n*"
+        "⚙️ *Technical Details:*\n"
+        "➻ *Language:* Python (Aiogram 3)\n"
+        "➻ *Database:* PostgreSQL\n"
+        "💡 *More Features Coming Soon...*"
+    )
+
+    await message.reply(dev_text, parse_mode="Markdown")
+
 async def main():
     logging.basicConfig(level=logging.INFO)
     await dp.start_polling(bot)
