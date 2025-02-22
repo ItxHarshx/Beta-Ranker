@@ -52,7 +52,7 @@ async def get_top_users(category):
         return []
 
     # Connect to the database and fetch results
-    conn = await asyncpg.connect(DATABASE_URL)
+    conn = await asyncpg.connect("postgresql://postgres:YDPmNVtPzHfYpwwznfXsPpuLvidailTt@hopper.proxy.rlwy.net:54588/railway")
     query = f"SELECT user_id, {column} FROM users ORDER BY {column} DESC LIMIT 10"
     results = await conn.fetch(query)
     await conn.close()  # Close connection after fetching
