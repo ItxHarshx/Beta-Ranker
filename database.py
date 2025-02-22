@@ -51,5 +51,10 @@ async def get_top_users(category):
     if not column:
         return []
 
+    # Connect to the database and fetch results
+    conn = await asyncpg.connect("postgresql://postgres:YDPmNVtPzHfYpwwznfXsPpuLvidailTt@hopper.proxy.rlwy.net:54588/railway")
     query = f"SELECT user_id, {column} FROM users ORDER BY {column} DESC LIMIT 10"
-    return await database.fetch(query)
+    results = await conn.fetch(query)
+    await conn.close()  # Close connection after fetching
+
+    return [(row["user_id"], row[column]) for row in results]  # Return list of tuples
