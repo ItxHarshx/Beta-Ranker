@@ -88,12 +88,12 @@ async def daily_checkin(message: types.Message):
     # Calculate remaining time
     remaining_time = next_checkin_time - datetime.now(timezone.utc)
     
-        if remaining_time.total_seconds() > 0:
-            hours, remainder = divmod(remaining_time.total_seconds(), 3600)
-            minutes, _ = divmod(remainder, 60)
-            await message.reply(f"{first_name}, you've already claimed today's rewards!\n"
+    if remaining_time.total_seconds() > 0:
+        hours, remainder = divmod(remaining_time.total_seconds(), 3600)
+        minutes, _ = divmod(remainder, 60)
+    await message.reply(f"{first_name}, you've already claimed today's rewards!\n"
                                 f"⏳ You can check-in again in {int(hours)}h {int(minutes)}m.")
-            return
+        return
 
     await update_checkin(user_id)
     await message.reply(f"{first_name}, you've checked in successfully!\n"
