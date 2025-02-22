@@ -62,13 +62,18 @@ async def start_handler(message: types.Message):
 # Help command
 @dp.message(Command("help"))
 async def help_command(message: Message):
-    help_text = "⚡ Available Commands:\n"
-                "/start - Start the bot\n"
-                "/help - Show available commands\n"
-                "/profile - Get your profile\n"
-                "/daily - Claim your daily checkin reward\n"
-                "/balance - Check your balance\n"
-                "/leaderboard - Get top users leaderboard\n"
+    help_text = (
+    "⚡ **Available Commands:**\n\n"
+    "▶️ **General Commands:**\n"
+    "/start - Start the bot\n"
+    "/help - Show available commands\n\n"
+    "👤 **User Commands:**\n"
+    "/profile - View your profile\n"
+    "/balance - Check your balance\n"
+    "/daily - Claim your daily reward\n\n"
+    "🏆 **Leaderboards:**\n"
+    "/leaderboard - View top users\n"
+)
     await message.answer(help_text)
 
 dp.include_router(user_profile.router)
