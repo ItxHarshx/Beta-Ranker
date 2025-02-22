@@ -4,14 +4,13 @@ from database import get_user_data
 
 router = Router()
 
+@router.message(Command("balance"))
+async def check_balance(message: types.Message):
 user_id = message.from_user.id
 first_name = message.from_user.first_name
 
 user_data = await get_user_data(user_id)
-
-@router.message(Command("balance"))
-async def check_balance(message: types.Message):
-
+  
     if user_data:
         gold_coins = user_data["gold_coins"]
         essence = user_data["essence"]
