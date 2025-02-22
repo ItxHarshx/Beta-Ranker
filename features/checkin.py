@@ -7,13 +7,14 @@ router = Router()
 
 @router.message(Command("daily"))
 async def daily_checkin(message: types.Message):
+    """Handles the /daily command for daily check-in rewards."""
     user_id = message.from_user.id
     first_name = message.from_user.first_name
 
-    # Get last check-in time
+    # Get the last check-in time from the database
     last_checkin = await get_last_checkin(user_id)
 
-    # Check if 24 hours have passed
+    # If user has a check-in record, check if 24 hours have passed
     if last_checkin:
         next_checkin_time = last_checkin + timedelta(hours=24)
         remaining_time = next_checkin_time - datetime.utcnow()
@@ -28,9 +29,9 @@ async def daily_checkin(message: types.Message):
             )
             return
 
-    # Update check-in time and reward user
+    # If eligible, update check-in time and reward user
     await update_checkin(user_id)
     await message.reply(
-        f"{first_name}, you've checked in successfully!\n"
+        f"✅ {first_name}, you have successfully checked in!\n"
         f"🎁 You received **75 Gold Coins** & **5 Essence**."
     )
