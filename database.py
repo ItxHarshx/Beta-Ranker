@@ -42,7 +42,7 @@ async def update_checkin(user_id):
 async def get_top_users(category):
     """Fetch the top 10 users based on the selected category."""
     valid_columns = {
-        "level": "level",  # ✅ Changed from "exp" to "level"
+        "level": "level",
         "gold": "gold_coins",
         "essence": "essence"
     }
@@ -53,8 +53,8 @@ async def get_top_users(category):
 
     # Connect to the database and fetch results
     conn = await asyncpg.connect("postgresql://postgres:YDPmNVtPzHfYpwwznfXsPpuLvidailTt@hopper.proxy.rlwy.net:54588/railway")
-    query = f"SELECT user_id, {column} FROM users ORDER BY {column} DESC LIMIT 10"
+    query = f"SELECT user_id, first_name, {column} FROM users ORDER BY {column} DESC LIMIT 10"
     results = await conn.fetch(query)
     await conn.close()  # Close connection after fetching
 
-    return [(row["user_id"], row[column]) for row in results]  # Return list of tuples
+    return [(row["user_id"], row["first_name"], row[column]) for row in results]  # ✅ Now returns first_name too
