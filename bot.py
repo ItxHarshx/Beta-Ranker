@@ -62,7 +62,7 @@ async def start_handler(message: types.Message):
 
     # Send photo with caption and button
     await message.answer_photo(
-        photo="https://imgur.com/a/hJU9sB4",
+        photo="https://ibb.co/YFVsLtWN",
         caption=caption,
         reply_markup=keyboard
     )
@@ -72,18 +72,19 @@ async def start_handler(message: types.Message):
 @dp.message(Command("help"))
 async def help_command(message: Message):
     help_text = (
-    "⚡ **Available Commands:**\n\n"
-    "▶️ **General Commands:**\n"
+    "*Available Commands:*\n\n"
+    "💠 *General Commands:*\n"
     "/start - Start the bot\n"
     "/help - Show available commands\n\n"
-    "👤 **User Commands:**\n"
+    "👤 *User Commands:*\n"
     "/profile - View your profile\n"
     "/balance - Check your balance\n"
     "/daily - Claim your daily reward\n\n"
-    "🏆 **Leaderboards:**\n"
+    "🏆 *Leaderboards:*\n"
     "/leaderboard - View top users\n"
 )
-    await message.answer(help_text)
+
+await message.reply(help_text, parse_mode="Markdown")
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
@@ -138,8 +139,8 @@ async def balance_handler(message: types.Message):
 
     # Format balance text
     balance_text = (
-        f"💰 {first_name}'s Balance\n\n"
-        f"💵 Gold Coins: {gold_coins:,}\n"
+        f"➻ {first_name}'s Balance:\n\n"
+        f"💰 Gold Coins: {gold_coins:,}\n"
         f"🔮 Essence: {essence}\n"
     )
 
