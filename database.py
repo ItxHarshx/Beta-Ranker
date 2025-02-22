@@ -38,3 +38,18 @@ async def update_checkin(user_id):
         datetime.utcnow(), user_id
     )
     await conn.close()
+
+async def get_top_users(category):
+    """Fetch the top 10 users based on the selected category."""
+    valid_columns = {
+        "exp": "exp",
+        "gold": "gold_coins",
+        "essence": "essence"
+    }
+
+    column = valid_columns.get(category)
+    if not column:
+        return []
+
+    query = f"SELECT user_id, {column} FROM users ORDER BY {column} DESC LIMIT 10"
+    return await database.fetch(query)
