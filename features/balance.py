@@ -4,10 +4,10 @@ from database import get_user_data
 
 router = Router()
 
-    user_id = message.from_user.id
-    first_name = message.from_user.first_name
+user_id = message.from_user.id
+first_name = message.from_user.first_name
 
-    user_data = await get_user_data(user_id)
+user_data = await get_user_data(user_id)
 
 @router.message(Command("balance"))
 async def check_balance(message: types.Message):
