@@ -1,9 +1,8 @@
 from aiogram import Router, types
 from aiogram.filters import Command
 from datetime import datetime, timedelta
-import asyncpg
 import logging
-from database import connect_db  # Ensure it matches your database file
+from database import connect_db, create_user_if_not_exists, get_user_data
 
 router = Router()
 
@@ -15,15 +14,9 @@ async def daily_checkin(message: types.Message):
     logging.info(f"/daily command received from {user_id}")
 
     try:
+        await create_user_if_not_exists(user_id)
+        
         conn = await connect_db()
-
-        # Ensure user exists
-        await conn.execute(
-            """INSERT INTO users (user_id, health, gold_coins, exp, level, essence, last_message_time, last_checkin)
-               VALUES ($1, 100, 0, 0, 1, 0, NOW(), NULL) 
-               ON CONFLICT (user_id) DO NOTHING""",
-            user_id
-        )
 
         # Get last check-in time
         last_checkin = await conn.fetchval("SELECT last_checkin FROM users WHERE user_id = $1", user_id)
