@@ -9,7 +9,7 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 from features import user_profile, leveling, daily
 from features.user_profile import router as profile_router
-from features.daily import router as daily_router
+from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
 
@@ -67,7 +67,28 @@ async def help_command(message: Message):
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
-dp.include_router(daily.router)
+
+@dp.message(Command("daily"))
+async def daily_checkin(message: types.Message):
+    user_id = message.from_user.id
+    first_name = message.from_user.first_name
+
+    last_checkin = await get_last_checkin(user_id)
+
+    if last_checkin:
+        next_checkin_time = last_checkin + timedelta(hours=24)
+        remaining_time = next_checkin_time - datetime.utcnow()
+
+        if remaining_time.total_seconds() > 0:
+            hours, remainder = divmod(remaining_time.total_seconds(), 3600)
+            minutes, _ = divmod(remainder, 60)
+            await message.reply(f"⚠️ {first_name}, you've already claimed today's rewards!\n"
+                                f"⏳ You can check-in again in {int(hours)}h {int(minutes)}m.")
+            return
+
+    await update_checkin(user_id)
+    await message.reply(f"{first_name}, you've checked in successfully!\n"
+                        f"🎁 You received **75 Gold Coins** & **5 Essence**.")
 
 # Error handling
 async def main():
