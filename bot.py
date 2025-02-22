@@ -43,6 +43,15 @@ async def start_handler(message: types.Message):
         ]
     )
 
+# Fetch user stats from the database
+user_data = await get_user_data(user_id)
+
+if not user_data:
+    await message.reply("Error fetching your data. Try again later.")
+    return
+
+level, gold_coin, _, _, essence = user_data  # Unpack the correct values
+    
     # Welcome message
     caption = (
         f"Hey {user_link}, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
