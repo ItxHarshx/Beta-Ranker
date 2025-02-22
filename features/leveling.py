@@ -10,7 +10,7 @@ router = Router()
 EXP_PER_MESSAGE = 2
 SPAM_LIMIT_SECONDS = 0.5  # Prevents spam (2 messages per second)
 
-GROUP_ID = -1002361603406
+GROUP_ID = -1002361603406, -1002135192853
 
 # Leveling EXP Pattern
 LEVEL_EXP_REQUIREMENTS = {
