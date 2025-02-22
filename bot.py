@@ -78,9 +78,16 @@ async def daily_checkin(message: types.Message):
     last_checkin = await get_last_checkin(user_id)
 
     if last_checkin:
-        next_checkin_time = last_checkin + timedelta(hours=24)
-        remaining_time = next_checkin_time - datetime.now(timezone.utc)
+    # Ensure last_checkin is timezone-aware (convert if necessary)
+    if last_checkin.tzinfo is None:
+        last_checkin = last_checkin.replace(tzinfo=timezone.utc)
 
+    # Calculate next check-in time
+    next_checkin_time = last_checkin + timedelta(hours=24)
+
+    # Calculate remaining time
+    remaining_time = next_checkin_time - datetime.now(timezone.utc)
+    
         if remaining_time.total_seconds() > 0:
             hours, remainder = divmod(remaining_time.total_seconds(), 3600)
             minutes, _ = divmod(remainder, 60)
