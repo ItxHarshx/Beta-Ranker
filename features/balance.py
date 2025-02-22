@@ -1,9 +1,10 @@
-from aiogram import types
-from database import get_user_data, create_user_if_not_exists
-from config import bot, dp
+from aiogram import Router, types
 from aiogram.filters import Command
+from database import get_user_data, create_user_if_not_exists
 
-@dp.message(Command("balance"))
+router = Router()  # Create a Router for balance commands
+
+@router.message(Command("balance"))
 async def balance_handler(message: types.Message):
     user_id = message.from_user.id
     first_name = message.from_user.first_name
