@@ -43,15 +43,19 @@ async def start_handler(message: types.Message):
         ]
     )
 
-# Fetch user stats from the database
+    # ✅ Ensure the user exists in the database before fetching data
+    await create_user_if_not_exists(user_id, safe_first_name)
+
+    # ✅ Now fetch user stats
     user_data = await get_user_data(user_id)
 
     if not user_data:
-       await message.reply("Error fetching your data. Try again later.")
-       return
+        await message.reply("Error fetching your data. Try again later.")
+        return
 
-    health, gold_coins, exp, level, essence = user_data  # Unpack the correct values
-    
+    # ✅ Unpack user stats correctly
+    health, gold_coins, exp, level, essence = user_data  
+
     # Welcome message
     caption = (
         f"Hey {user_link}, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
@@ -64,7 +68,8 @@ async def start_handler(message: types.Message):
     await message.answer_photo(
         photo="https://ibb.co/YFVsLtWN",
         caption=caption,
-        reply_markup=keyboard
+        reply_markup=keyboard,
+        parse_mode="HTML"
     )
 
     
