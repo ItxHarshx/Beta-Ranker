@@ -130,7 +130,7 @@ async def balance_handler(message: types.Message):
 # 🏆 Leaderboard Categories
 LEADERBOARD_CATEGORIES = {
     "level": "🔰 Level",
-    "gold": "💰 Gold Coins",
+    "gold": "💰 Coins",
     "essence": "🔮 Essence"
 }
 
