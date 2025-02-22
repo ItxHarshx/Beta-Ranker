@@ -5,12 +5,13 @@ import html
 from datetime import datetime, timedelta, timezone
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import Message
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters import Command
 from dotenv import load_dotenv
 from features import user_profile, leveling
 from features.user_profile import router as profile_router
-from database import get_last_checkin, update_checkin, get_user_data, create_user_if_not_exists
+from database import get_last_checkin, update_checkin, get_user_data, create_user_if_not_exists, get_top_users
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties 
 
@@ -125,6 +126,48 @@ async def balance_handler(message: types.Message):
     )
 
     await message.reply(balance_text)
+
+# 🏆 Leaderboard Categories
+LEADERBOARD_CATEGORIES = {
+    "exp": "📈 EXP",
+    "gold": "💰 Gold Coins",
+    "essence": "🔮 Essence"
+}
+
+def get_leaderboard_keyboard():
+    """Creates inline buttons to switch between leaderboards."""
+    keyboard = InlineKeyboardBuilder()
+    for stat, label in LEADERBOARD_CATEGORIES.items():
+        keyboard.button(text=label, callback_data=f"leaderboard_{stat}")
+    return keyboard.as_markup()
+
+async def send_leaderboard(message: types.Message, category="exp", edit=False):
+    """Fetches leaderboard data and sends (or updates) the message."""
+    top_users = await get_top_users(category)
+
+    if not top_users:
+        leaderboard_text = "No users found in the leaderboard yet."
+    else:
+        leaderboard_text = f"🏆 **Leaderboard - {LEADERBOARD_CATEGORIES[category]}** 🏆\n\n"
+        for rank, (user_id, stat_value) in enumerate(top_users, start=1):
+            leaderboard_text += f"**#{rank}** - [{user_id}](tg://user?id={user_id}) ➝ {stat_value}\n"
+
+    if edit:
+        await message.edit_text(leaderboard_text, reply_markup=get_leaderboard_keyboard(), parse_mode="Markdown")
+    else:
+        await message.reply(leaderboard_text, reply_markup=get_leaderboard_keyboard(), parse_mode="Markdown")
+
+@dp.message(Command("leaderboard"))
+async def leaderboard_handler(message: types.Message):
+    """Handles the /leaderboard command and shows the EXP leaderboard first."""
+    await send_leaderboard(message, category="exp")
+
+@dp.callback_query(lambda c: c.data.startswith("leaderboard_"))
+async def switch_leaderboard(callback: CallbackQuery):
+    """Handles inline button clicks to switch leaderboard categories."""
+    category = callback.data.split("_")[1]  # Extracts the chosen category
+    await send_leaderboard(callback.message, category=category, edit=True)
+    await callback.answer()  # Acknowledge the button click
 
 async def main():
     logging.basicConfig(level=logging.INFO)
