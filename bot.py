@@ -13,8 +13,7 @@ from features.user_profile import router as profile_router
 from features.balance import router as balance_router
 from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
-from aiogram.client.default import DefaultBotProperties
-import balance 
+from aiogram.client.default import DefaultBotProperties 
 
 # Load environment variables (Bot Token)
 load_dotenv()
