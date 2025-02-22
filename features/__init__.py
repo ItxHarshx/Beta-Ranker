@@ -1,1 +1,1 @@
-from . import user_profile, leveling, daily
+from . import user_profile, leveling
