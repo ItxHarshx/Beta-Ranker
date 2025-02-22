@@ -47,7 +47,7 @@ async def start_handler(message: types.Message):
     caption = (
         f"Hey {user_link}, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
         f"<b>📜 ʜᴏᴡ ᴛᴏ ᴇᴀʀɴ ᴛᴏᴋᴇɴs?</b>\n"
-        f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴋᴀɪᴢᴇɴ ᴛᴏᴋᴇɴs.\n\n"
+        f"- ᴊᴜsᴛ ᴄʜᴀᴛ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ! ᴇᴠᴇʀʏ ᴍᴇssᴀɢᴇ ʏᴏᴜ sᴇɴᴅ ɢᴇᴛs ʏᴏᴜ ᴄʟᴏsᴇʀ ᴛᴏ ᴇᴀʀɴɪɴɢ ᴋᴀɪᴢᴇɴ ᴛᴏᴋᴇɴs.\n\n➻ ʏᴏᴜʀ sᴛᴀᴛs:\nʏᴏᴜʀ ʟᴇᴠᴇʟ: {level}\nᴄᴏɪɴs: {gold_coin:,}\nᴇssᴇɴᴄᴇ: {essence}"
         f"𝖦𝖾𝗍 𝗌𝗍𝖺𝗋𝗍𝖾𝖽 𝗇𝗈𝗐! 𝗍𝗒𝗉𝖾 /help 𝖿𝗈𝗋 𝗆𝗈𝗋𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽𝗌."
     )
 
@@ -62,9 +62,13 @@ async def start_handler(message: types.Message):
 # Help command
 @dp.message(Command("help"))
 async def help_command(message: Message):
-    help_text = "⚡ Available Commands:\n" \
-                "/start - Start the bot\n" \
+    help_text = "⚡ Available Commands:\n"
+                "/start - Start the bot\n"
                 "/help - Show available commands\n"
+                "/profile - Get your profile\n"
+                "/daily - Claim your daily checkin reward\n"
+                "/balance - Check your balance\n"
+                "/leaderboard - Get top users leaderboard\n"
     await message.answer(help_text)
 
 dp.include_router(user_profile.router)
