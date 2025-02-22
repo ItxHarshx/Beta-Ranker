@@ -29,3 +29,12 @@ async def get_last_checkin(user_id):
     last_checkin = await conn.fetchval("SELECT last_checkin FROM users WHERE user_id = $1", user_id)
     await conn.close()
     return last_checkin
+
+# Function to update the check-in time and add rewards
+async def update_checkin(user_id):
+    conn = await connect_db()
+    await conn.execute(
+        "UPDATE users SET last_checkin = $1, gold_coins = gold_coins + 75, essence = essence + 5 WHERE user_id = $2",
+        datetime.utcnow(), user_id
+    )
+    await conn.close()
