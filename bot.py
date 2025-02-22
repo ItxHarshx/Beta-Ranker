@@ -50,7 +50,7 @@ async def start_handler(message: types.Message):
        await message.reply("Error fetching your data. Try again later.")
        return
 
-    _, _, gold_coin, _, level, essence = user_data  # Unpack the correct values
+    health, gold_coins, exp, level, essence = user_data  # Unpack the correct values
     
     # Welcome message
     caption = (
