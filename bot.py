@@ -149,8 +149,9 @@ async def send_leaderboard(message: types.Message, category="level", edit=False)
         leaderboard_text = "No users found in the leaderboard yet."
     else:
         leaderboard_text = f"🏆 **Leaderboard - {LEADERBOARD_CATEGORIES[category]}** 🏆\n\n"
-        for rank, (user_id, stat_value) in enumerate(top_users, start=1):
-            leaderboard_text += f"**#{rank}** - <@{user_id}> ➝ {stat_value}\n"
+        for rank, (user_id, first_name, stat_value) in enumerate(top_users, start=1):
+            user_link = f"[{first_name}](tg://user?id={user_id})"
+            leaderboard_text += f"**{rank}** - {user_link} ➝ {stat_value}\n"
 
     if edit:
         await message.edit_text(leaderboard_text, reply_markup=get_leaderboard_keyboard(), parse_mode="Markdown")
