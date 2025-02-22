@@ -8,7 +8,7 @@ from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from dotenv import load_dotenv
-from features import user_profile, leveling
+from features import user_profile, leveling, balance
 from features.user_profile import router as profile_router
 from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
@@ -68,6 +68,7 @@ async def help_command(message: Message):
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
+dp.include_router(balance.router)
 
 @dp.message(Command("daily"))
 async def daily_checkin(message: types.Message):
