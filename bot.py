@@ -93,7 +93,7 @@ async def daily_checkin(message: types.Message):
         minutes, _ = divmod(remainder, 60)
     await message.reply(f"{first_name}, you've already claimed today's rewards!\n"
                                 f"⏳ You can check-in again in {int(hours)}h {int(minutes)}m.")
-        return
+    return
 
     await update_checkin(user_id)
     await message.reply(f"{first_name}, you've checked in successfully!\n"
