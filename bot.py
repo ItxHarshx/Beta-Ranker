@@ -100,13 +100,15 @@ async def daily_checkin(message: types.Message):
                         f"🎁 You received 75 Gold Coins & 5 Essence !")
 
 async def main():
-    logging.basicConfig(level=logging.INFO)  # ✅ Enable logging for debugging
+    logging.basicConfig(level=logging.INFO)
+
+    dp.include_router(balance_router)  # ✅ Register balance command
+    print("✅ Balance router registered!")  # ✅ Debugging print
 
     try:
-        dp.include_router(balance_router)  # ✅ Register balance router
         await dp.start_polling(bot)  # ✅ Start the bot
     except Exception as e:
-        logging.error(f"Bot crashed due to: {e}")  # ✅ Log any errors
-
+        logging.error(f"Bot crashed due to: {e}")
+        
 if __name__ == "__main__":
     asyncio.run(main())
