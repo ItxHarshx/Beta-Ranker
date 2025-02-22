@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 # Connect to PostgreSQL
 async def connect_db():
-    return await asyncpg.connect("postgresql://postgres:ACreHcGdIgZDBLjIsUlsuBramNfHFsIr@hopper.proxy.rlwy.net:37136/railway")  # Change credentials!
+    return await asyncpg.connect("postgresql://postgres:HrbcTffvpGPXMwUFepcQONrZzXguDNfR@mainline.proxy.rlwy.net:35974/railway")  # Change credentials!
 
 # Create user if not exists
 async def create_user_if_not_exists(user_id):
@@ -52,7 +52,7 @@ async def get_top_users(category):
         return []
 
     # Connect to the database and fetch results
-    conn = await asyncpg.connect("postgresql://postgres:ACreHcGdIgZDBLjIsUlsuBramNfHFsIr@hopper.proxy.rlwy.net:37136/railway")
+    conn = await asyncpg.connect("postgresql://postgres:HrbcTffvpGPXMwUFepcQONrZzXguDNfR@mainline.proxy.rlwy.net:35974/railway")
     query = f"SELECT user_id, first_name, {column} FROM users ORDER BY {column} DESC LIMIT 10"
     results = await conn.fetch(query)
     await conn.close()  # Close connection after fetching
