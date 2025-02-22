@@ -79,7 +79,7 @@ async def daily_checkin(message: types.Message):
 
     if last_checkin:
         next_checkin_time = last_checkin + timedelta(hours=24)
-        remaining_time = next_checkin_time - datetime.utcnow()
+        remaining_time = next_checkin_time - datetime.now(timezone.utc)
 
         if remaining_time.total_seconds() > 0:
             hours, remainder = divmod(remaining_time.total_seconds(), 3600)
