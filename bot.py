@@ -70,21 +70,21 @@ async def start_handler(message: types.Message):
     
 # Help command
 @dp.message(Command("help"))
-async def help_command(message: Message):
+async def help_command(message: types.Message):
     help_text = (
-    "*Available Commands:*\n\n"
-    "💠 *General Commands:*\n"
-    "/start - Start the bot\n"
-    "/help - Show available commands\n\n"
-    "👤 *User Commands:*\n"
-    "/profile - View your profile\n"
-    "/balance - Check your balance\n"
-    "/daily - Claim your daily reward\n\n"
-    "🏆 *Leaderboards:*\n"
-    "/leaderboard - View top users\n"
-)
+        "*Available Commands:*\n\n"
+        "💠 *General Commands:*\n"
+        "/start - Start the bot\n"
+        "/help - Show available commands\n\n"
+        "👤 *User Commands:*\n"
+        "/profile - View your profile\n"
+        "/balance - Check your balance\n"
+        "/daily - Claim your daily reward\n\n"
+        "🏆 *Leaderboards:*\n"
+        "/leaderboard - View top users\n"
+    )
 
-await message.reply(help_text, parse_mode="Markdown")
+    await message.reply(help_text, parse_mode="Markdown")  # ✅ Proper indentation
 
 dp.include_router(user_profile.router)
 dp.include_router(leveling.router)
