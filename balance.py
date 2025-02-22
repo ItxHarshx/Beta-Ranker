@@ -1,6 +1,7 @@
 from aiogram import types
 from database import get_user_data, create_user_if_not_exists
 from config import bot, dp
+from aiogram.filters import Command
 
 @dp.message(Command("balance"))
 async def balance_handler(message: types.Message):
