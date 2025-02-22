@@ -18,8 +18,12 @@ async def daily_checkin(message: types.Message):
         
         conn = await connect_db()
 
-        # Get last check-in time
-        last_checkin = await conn.fetchval("SELECT last_checkin FROM users WHERE user_id = $1", user_id)
+async def get_last_checkin(user_id):
+    conn = await connect_db()
+    last_checkin = await conn.fetchval("SELECT last_checkin FROM users WHERE user_id = $1", user_id)
+    await conn.close()
+    return last_checkin or datetime.min  # Avoids NoneType error
+        
 
         # Check if 24 hours have passed
         if last_checkin:
