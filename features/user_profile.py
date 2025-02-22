@@ -2,7 +2,7 @@ import asyncpg
 from aiogram import Router, types
 from aiogram.filters import Command
 from features.leveling import get_exp_required  # Function to get required EXP
-from database import get_user_data, create_user_if_not_exists, 
+from database import get_user_data, create_user_if_not_exists
 from features.daily import last_checkin
 from datetime import datetime
 
