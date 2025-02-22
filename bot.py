@@ -44,13 +44,13 @@ async def start_handler(message: types.Message):
     )
 
 # Fetch user stats from the database
-user_data = await get_user_data(user_id)
+    user_data = await get_user_data(user_id)
 
-if not user_data:
-    await message.reply("Error fetching your data. Try again later.")
-    return
+    if not user_data:
+       await message.reply("Error fetching your data. Try again later.")
+       return
 
-level, gold_coin, _, _, essence = user_data  # Unpack the correct values
+    level, gold_coin, _, _, essence = user_data  # Unpack the correct values
     
     # Welcome message
     caption = (
