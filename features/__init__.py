@@ -1,1 +1,1 @@
-from . import user_profile, leveling, balance
+from . import user_profile, leveling
