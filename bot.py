@@ -129,7 +129,7 @@ async def balance_handler(message: types.Message):
 
 # 🏆 Leaderboard Categories
 LEADERBOARD_CATEGORIES = {
-    "exp": "📈 EXP",
+    "level": "⚡ Level",  # ✅ Changed from "exp" to "level"
     "gold": "💰 Gold Coins",
     "essence": "🔮 Essence"
 }
@@ -141,7 +141,7 @@ def get_leaderboard_keyboard():
         keyboard.button(text=label, callback_data=f"leaderboard_{stat}")
     return keyboard.as_markup()
 
-async def send_leaderboard(message: types.Message, category="exp", edit=False):
+async def send_leaderboard(message: types.Message, category="level", edit=False):  # ✅ Default set to "level"
     """Fetches leaderboard data and sends (or updates) the message."""
     top_users = await get_top_users(category)
 
@@ -150,7 +150,7 @@ async def send_leaderboard(message: types.Message, category="exp", edit=False):
     else:
         leaderboard_text = f"🏆 **Leaderboard - {LEADERBOARD_CATEGORIES[category]}** 🏆\n\n"
         for rank, (user_id, stat_value) in enumerate(top_users, start=1):
-            leaderboard_text += f"**#{rank}** - [{user_id}](tg://user?id={user_id}) ➝ {stat_value}\n"
+            leaderboard_text += f"**#{rank}** - <@{user_id}> ➝ {stat_value}\n"
 
     if edit:
         await message.edit_text(leaderboard_text, reply_markup=get_leaderboard_keyboard(), parse_mode="Markdown")
@@ -159,8 +159,8 @@ async def send_leaderboard(message: types.Message, category="exp", edit=False):
 
 @dp.message(Command("leaderboard"))
 async def leaderboard_handler(message: types.Message):
-    """Handles the /leaderboard command and shows the EXP leaderboard first."""
-    await send_leaderboard(message, category="exp")
+    """Handles the /leaderboard command and shows the Level leaderboard first."""
+    await send_leaderboard(message, category="level")  # ✅ Default to "level"
 
 @dp.callback_query(lambda c: c.data.startswith("leaderboard_"))
 async def switch_leaderboard(callback: CallbackQuery):
@@ -168,7 +168,7 @@ async def switch_leaderboard(callback: CallbackQuery):
     category = callback.data.split("_")[1]  # Extracts the chosen category
     await send_leaderboard(callback.message, category=category, edit=True)
     await callback.answer()  # Acknowledge the button click
-
+    
 async def main():
     logging.basicConfig(level=logging.INFO)
     await dp.start_polling(bot)
