@@ -10,7 +10,6 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 from features import user_profile, leveling
 from features.user_profile import router as profile_router
-from features.balance import router as balance_router
 from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties 
@@ -99,16 +98,37 @@ async def daily_checkin(message: types.Message):
     await message.reply(f"{first_name}, you've checked in successfully!\n"
                         f"🎁 You received 75 Gold Coins & 5 Essence !")
 
+# ✅ **Balance Command**
+@dp.message(Command("balance"))
+async def balance_handler(message: types.Message):
+    user_id = message.from_user.id
+    first_name = message.from_user.first_name
+
+    # Ensure user exists in the database
+    await create_user_if_not_exists(user_id)
+
+    # Fetch user data
+    user_data = await get_user_data(user_id)
+
+    if not user_data:
+        await message.reply("❌ Error: Could not fetch balance data.")
+        return
+
+    # Extract Gold Coins & Essence
+    _, gold_coins, _, _, essence = user_data
+
+    # Format balance text
+    balance_text = (
+        f"💰 {first_name}'s Balance\n\n"
+        f"💵 Gold Coins: {gold_coins:,}\n"
+        f"🔮 Essence: {essence}\n"
+    )
+
+    await message.reply(balance_text)
+
 async def main():
     logging.basicConfig(level=logging.INFO)
-
-    dp.include_router(balance_router)  # ✅ Register balance command
-    print("✅ Balance router registered!")  # ✅ Debugging print
-
-    try:
-        await dp.start_polling(bot)  # ✅ Start the bot
-    except Exception as e:
-        logging.error(f"Bot crashed due to: {e}")
+    await dp.start_polling(bot)
         
 if __name__ == "__main__":
     asyncio.run(main())
