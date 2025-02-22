@@ -44,7 +44,7 @@ async def update_user_exp(user_id, message: types.Message):
     if user["last_message_time"]:
         last_time = user["last_message_time"]
         if now - last_time < timedelta(seconds=SPAM_LIMIT_SECONDS):
-            await message.reply("⚠️ You can't spam messages for EXP!")
+            await message.reply("⚠️ You can't spam messages!")
             return
 
     new_exp = user["exp"] + EXP_PER_MESSAGE
