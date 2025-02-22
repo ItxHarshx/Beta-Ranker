@@ -153,8 +153,7 @@ async def send_leaderboard(message: types.Message, category="level", edit=False)
             user_link = f"[{first_name}](tg://user?id={user_id})"
             # ✅ Add commas only if the category is 'gold' (Gold Coins)
             formatted_value = f"{stat_value:,}" if category == "gold" else stat_value
-            leaderboard_text += f"**{rank}** - {user_link} ➝ {stat_value}\n"
-
+            leaderboard_text += f"**{rank}** - {user_link} ➝ {formatted_value}\n"
     if edit:
         await message.edit_text(leaderboard_text, reply_markup=get_leaderboard_keyboard(), parse_mode="Markdown")
     else:
