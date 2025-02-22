@@ -10,6 +10,7 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 from features import user_profile, leveling
 from features.user_profile import router as profile_router
+from features.balance import router as balance_router
 from database import get_last_checkin, update_checkin
 from aiogram.enums.parse_mode import ParseMode 
 from aiogram.client.default import DefaultBotProperties
@@ -99,10 +100,14 @@ async def daily_checkin(message: types.Message):
     await message.reply(f"{first_name}, you've checked in successfully!\n"
                         f"🎁 You received 75 Gold Coins & 5 Essence !")
 
-# Error handling
 async def main():
-    logging.basicConfig(level=logging.INFO)
-    await dp.start_polling(bot)
+    logging.basicConfig(level=logging.INFO)  # ✅ Enable logging for debugging
+
+    try:
+        dp.include_router(balance_router)  # ✅ Register balance router
+        await dp.start_polling(bot)  # ✅ Start the bot
+    except Exception as e:
+        logging.error(f"Bot crashed due to: {e}")  # ✅ Log any errors
 
 if __name__ == "__main__":
     asyncio.run(main())
