@@ -151,6 +151,8 @@ async def send_leaderboard(message: types.Message, category="level", edit=False)
         leaderboard_text = f"🏆 **Leaderboard - {LEADERBOARD_CATEGORIES[category]}** 🏆\n\n"
         for rank, (user_id, first_name, stat_value) in enumerate(top_users, start=1):
             user_link = f"[{first_name}](tg://user?id={user_id})"
+            # ✅ Add commas only if the category is 'gold' (Gold Coins)
+            formatted_value = f"{stat_value:,}" if category == "gold" else stat_value
             leaderboard_text += f"**{rank}** - {user_link} ➝ {stat_value}\n"
 
     if edit:
