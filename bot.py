@@ -87,27 +87,29 @@ async def daily_checkin(message: types.Message):
 
     last_checkin = await get_last_checkin(user_id)
 
+    # If last_checkin is None (first-time check-in), allow claiming immediately
     if last_checkin:
-    # Ensure last_checkin is timezone-aware (convert if necessary)
+        # Ensure last_checkin is timezone-aware
         if last_checkin.tzinfo is None:
             last_checkin = last_checkin.replace(tzinfo=timezone.utc)
 
-    # Calculate next check-in time
-    next_checkin_time = last_checkin + timedelta(hours=24)
+        # Calculate next check-in time
+        next_checkin_time = last_checkin + timedelta(hours=24)
 
-    # Calculate remaining time
-    remaining_time = next_checkin_time - datetime.now(timezone.utc)
-    
-    if remaining_time.total_seconds() > 0:
-        hours, remainder = divmod(remaining_time.total_seconds(), 3600)
-        minutes, _ = divmod(remainder, 60)
-    await message.reply(f"{first_name}, you've already claimed today's rewards!\n"
-                        f"⏳ You can check-in again in {int(hours)}h {int(minutes)}m.")
-    return
+        # Calculate remaining time
+        remaining_time = next_checkin_time - datetime.now(timezone.utc)
 
+        if remaining_time.total_seconds() > 0:
+            hours, remainder = divmod(remaining_time.total_seconds(), 3600)
+            minutes, _ = divmod(remainder, 60)
+            await message.reply(f"{first_name}, you've already claimed today's rewards!\n"
+                                f"⏳ You can check-in again in {int(hours)}h {int(minutes)}m.")
+            return  # Stop execution if check-in is not yet available
+
+    # Update check-in timestamp & reward user
     await update_checkin(user_id)
     await message.reply(f"{first_name}, you've checked in successfully!\n"
-                        f"🎁 You received 75 Gold Coins & 5 Essence !")
+                        f"🎁 You received 75 Gold Coins & 5 Essence!")
 
 # ✅ **Balance Command**
 @dp.message(Command("balance"))
