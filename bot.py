@@ -127,7 +127,7 @@ async def balance_handler(message: types.Message):
     first_name = message.from_user.first_name
 
     # Ensure user exists in the database
-    await create_user_if_not_exists(user_id)
+    await create_user_if_not_exists(user_id, first_name)
 
     # Fetch user data
     user_data = await get_user_data(user_id)
