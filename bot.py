@@ -208,10 +208,14 @@ async def switch_leaderboard(callback: CallbackQuery):
 #    await message.reply(dev_text, parse_mode="Markdown")
 
 # ------------𝗦𝗛𝗢𝗣---------------
-from aiogram.filters.callback_data import CallbackData
+from aiogram.filters.callback_data import CallbackData  # ✅ Correct import
 
-# Define callback data factory
-shop_callback = CallbackData("shop", "action", "page")
+# ✅ Define CallbackData properly
+class ShopCallback(CallbackData, prefix="shop"):
+    action: str
+    page: int
+
+shop_callback = ShopCallback()
 
 # Shop items (Booster section)
 SHOP_ITEMS = [
@@ -263,10 +267,10 @@ async def shop_handler(message: types.Message):
 
 # Handling navigation & back button
 @dp.callback_query(shop_callback.filter())
-async def shop_navigation(call: types.CallbackQuery, callback_data: dict):
+async def shop_navigation(call: types.CallbackQuery, callback_data: ShopCallback):
     """Handles shop navigation (Previous/Next page)."""
-    action = callback_data["action"]
-    page = int(callback_data["page"])
+    action = callback_data.action
+    page = callback_data.page
 
     if action in ["prev", "next"]:
         shop_text, reply_markup = get_shop_page(page)
