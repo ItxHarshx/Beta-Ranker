@@ -58,3 +58,16 @@ async def get_top_users(category):
     await conn.close()  # Close connection after fetching
 
     return [(row["user_id"], row["first_name"], row[column]) for row in results]  # ✅ Now returns first_name too
+
+# ---------- Boosters Table -----------
+async def create_boosters_table():
+    conn = await connect_db()
+    await conn.execute(
+        """CREATE TABLE IF NOT EXISTS boosters (
+            user_id BIGINT PRIMARY KEY, 
+            booster_name TEXT NOT NULL, 
+            duration INTERVAL NOT NULL, 
+            expiry TIMESTAMP NOT NULL
+        )"""
+    )
+    await conn.close()
