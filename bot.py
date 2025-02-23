@@ -213,9 +213,9 @@ from aiogram.filters.callback_data import CallbackData  # ✅ Correct import
 # ✅ Define CallbackData properly
 class ShopCallback(CallbackData, prefix="shop"):
     action: str
-    page: int
+    page: int = 1  # ✅ Default value added to prevent ValidationError
 
-shop_callback = ShopCallback()
+shop_callback = ShopCallback(action="next", page=1)  # ✅ Initialize properly
 
 # Shop items (Booster section)
 SHOP_ITEMS = [
