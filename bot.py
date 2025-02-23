@@ -208,9 +208,7 @@ async def switch_leaderboard(callback: CallbackQuery):
 #    await message.reply(dev_text, parse_mode="Markdown")
 
 # ------------𝗦𝗛𝗢𝗣---------------
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram import Bot, Dispatcher, types
-from aiogram.utils.callback_data import CallbackData
+from aiogram.filters.callback_data import CallbackData
 
 # Define callback data factory
 shop_callback = CallbackData("shop", "action", "page")
