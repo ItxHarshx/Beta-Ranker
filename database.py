@@ -71,3 +71,48 @@ async def create_boosters_table():
         )"""
     )
     await conn.close()
+
+import datetime
+
+# Function to check if the user has an active booster
+async def get_active_booster(user_id):
+    conn = await connect_db()
+    booster = await conn.fetchrow("SELECT booster_name, expiry FROM boosters WHERE user_id = $1", user_id)
+    await conn.close()
+    
+    if booster and booster["expiry"] > datetime.datetime.utcnow():
+        return booster  # Return active booster details
+    return None  # No active booster found
+
+# Function to purchase a booster
+async def purchase_booster(user_id, booster_name, duration, cost):
+    conn = await connect_db()
+
+    # Check if user has enough coins
+    user = await conn.fetchrow("SELECT gold_coins FROM users WHERE user_id = $1", user_id)
+    if not user or user["gold_coins"] < cost:
+        await conn.close()
+        return "not_enough_coins"
+
+    # Check if user already has an active booster
+    active_booster = await get_active_booster(user_id)
+    if active_booster:
+        await conn.close()
+        return "booster_already_active"
+
+    # Calculate expiry time
+    expiry_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=duration)
+
+    # Deduct coins and add booster
+    async with conn.transaction():
+        await conn.execute("UPDATE users SET gold_coins = gold_coins - $1 WHERE user_id = $2", cost, user_id)
+        await conn.execute(
+            """INSERT INTO boosters (user_id, booster_name, duration, expiry)
+               VALUES ($1, $2, $3, $4)
+               ON CONFLICT (user_id) DO UPDATE 
+               SET booster_name = EXCLUDED.booster_name, duration = EXCLUDED.duration, expiry = EXCLUDED.expiry""",
+            user_id, booster_name, duration, expiry_time
+        )
+
+    await conn.close()
+    return "success"
