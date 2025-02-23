@@ -3,7 +3,7 @@ import logging
 import os
 import html
 from datetime import datetime, timedelta, timezone
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, Router, F
 from aiogram.types import Message
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
@@ -210,8 +210,12 @@ async def switch_leaderboard(callback: CallbackQuery):
 # ------------𝗦𝗛𝗢𝗣---------------
 from aiogram.filters.callback_data import CallbackData
 
-# Define callback data factory
-shop_callback = CallbackData("shop", "action", "page")
+router = Router()
+
+# Define callback data factory correctly
+class ShopCallback(CallbackData, prefix="shop"):
+    action: str
+    page: int
 
 # Shop items (Booster section)
 SHOP_ITEMS = [
@@ -242,37 +246,39 @@ def get_shop_page(page: int = 1):
     # Navigation buttons
     nav_buttons = []
     if start > 0:
-        nav_buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=shop_callback.new("prev", page - 1)))
+        nav_buttons.append(InlineKeyboardButton("⬅️ Previous", callback_data=ShopCallback(action="prev", page=page - 1).pack()))
     if end < len(SHOP_ITEMS):
-        nav_buttons.append(InlineKeyboardButton("Next ➡️", callback_data=shop_callback.new("next", page + 1)))
-    buttons.append(nav_buttons)
+        nav_buttons.append(InlineKeyboardButton("Next ➡️", callback_data=ShopCallback(action="next", page=page + 1).pack()))
+    
+    if nav_buttons:
+        buttons.append(nav_buttons)
 
     # Back button
     buttons.append([InlineKeyboardButton("🔙 Back", callback_data="close_shop")])
 
-    return shop_text, InlineKeyboardMarkup(buttons)
+    return shop_text, InlineKeyboardMarkup(inline_keyboard=buttons)
 
 # Command to open the shop
-@dp.message_handler(commands=["shop"])
+@router.message(F.text == "/shop")
 async def shop_handler(message: types.Message):
     shop_text, reply_markup = get_shop_page(1)
     await message.answer(shop_text, reply_markup=reply_markup)
 
 # Handling navigation & back button
-@dp.callback_query_handler(shop_callback.filter())
-async def shop_navigation(call: types.CallbackQuery, callback_data: dict):
-    action = callback_data["action"]
-    page = int(callback_data["page"])
+@router.callback_query(ShopCallback.filter())
+async def shop_navigation(call: CallbackQuery, callback_data: ShopCallback):
+    action = callback_data.action
+    page = callback_data.page
 
-    if action == "prev" or action == "next":
+    if action in ["prev", "next"]:
         shop_text, reply_markup = get_shop_page(page)
         await call.message.edit_text(shop_text, reply_markup=reply_markup)
 
     await call.answer()
 
 # Handling back button
-@dp.callback_query_handler(lambda call: call.data == "close_shop")
-async def close_shop(call: types.CallbackQuery):
+@router.callback_query(F.data == "close_shop")
+async def close_shop(call: CallbackQuery):
     await call.message.delete()
     await call.answer()
 # -------------------------------
