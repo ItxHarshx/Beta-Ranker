@@ -32,8 +32,8 @@ async def start_handler(message: types.Message):
     # Escape special characters to avoid issues
     safe_first_name = html.escape(first_name)
 
-    # Ensure the user exists in the database
-    await create_user_if_not_exists(user_id)  # ✅ Only passing user_id
+    # Ensure the user exists in the database (updated to store first_name)
+    await create_user_if_not_exists(user_id, safe_first_name)
 
     # Fetch user stats
     user_data = await get_user_data(user_id)
@@ -43,6 +43,14 @@ async def start_handler(message: types.Message):
         return
 
     health, gold_coins, exp, level, essence = user_data  
+
+    # Inline button linking to KaisenWorld group
+    chat_group_url = "https://t.me/KaisenWorld"
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Join Chat Group", url=chat_group_url)]
+        ]
+    )
 
     caption = (
         f"Hey <a href='tg://user?id={user_id}'>{safe_first_name}</a>, 𝖶𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝗈 𝗍𝗁𝖾 𝖪𝖺𝗂𝗌𝖾𝗇 𝖱𝖺𝗇𝗄𝗂𝗇𝗀 𝖡𝗈𝗍! 🎉\n\n"
@@ -55,7 +63,8 @@ async def start_handler(message: types.Message):
     await message.answer_photo(
         photo="https://ibb.co/YFVsLtWN",
         caption=caption,
-        parse_mode="HTML"
+        parse_mode="HTML",
+        reply_markup=keyboard
     )
 
     
